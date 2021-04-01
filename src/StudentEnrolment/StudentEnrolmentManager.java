@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public interface StudentEnrolmentManager {
 
-    public void add (StudentEnrolment enrolment);
-    public void update (StudentEnrolment enrolment, Course course, String semester);
-    public void delete (String studentID, String courseID);
+    public boolean add(String studentID, String courseID, String semester);
+    public boolean update (String studentID, String courseID, String semester);
+    public void delete (int id);
     public StudentEnrolment getOne (String studentID, String courseID);
-    public ArrayList<StudentEnrolment> getAll();
+    public void getAll();
 
 }

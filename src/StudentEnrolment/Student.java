@@ -7,13 +7,11 @@ public class Student {
     private String studentID;
     private String studentName;
     private Date birthdate;
-    private ArrayList<Course> courseList;
 
     public Student(String studentID, String studentName, Date birthdate) {
         this.studentID = studentID;
         this.studentName = studentName;
         this.birthdate = birthdate;
-        this.courseList = new ArrayList<Course>();
     }
 
     public String getStudentID() {
