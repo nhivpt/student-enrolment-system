@@ -97,6 +97,10 @@ public class Menu {
                 case 2:
                     break;
                 case 3:
+                    System.out.println("---Course List---");
+                    sem.getStudentList();
+                    System.out.println("---Student List---");
+                    sem.getCourseList();
                     enrol();
                     break;
                 default:
@@ -108,16 +112,27 @@ public class Menu {
 
     public void enrol() {
         String studentID, courseID, semester;
+        System.out.println("Please enter student's ID, course's ID and semester to enrol.");
         System.out.print("Student ID: ");
         studentID = sc.next();
+        Student student = sem.findStudentByID(studentID);
+        if (student == null) {
+            System.out.println("There is no student with the ID " + studentID);
+            return;
+        }
         System.out.print("Course ID: ");
         courseID = sc.next();
+        Course course = sem.findCourseByID(courseID);
+        if (course == null) {
+            System.out.println("There is no course with the ID " + courseID);
+            return;
+        }
         if (sem.isDuplicate(studentID, courseID)) {
             System.out.println("This student has already enrolled in the course.");
         } else {
             System.out.print("Semester: ");
             semester = sc.next();
-            sem.add(studentID, courseID, semester);
+            sem.add(student, course, semester);
         }
     }
 }

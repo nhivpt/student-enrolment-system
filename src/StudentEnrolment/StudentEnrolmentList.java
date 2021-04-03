@@ -15,6 +15,14 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         this.studentList = new ArrayList<Student>();
     }
 
+    public static int getEnrolmentIDCounter() {
+        return enrolmentIDCounter;
+    }
+
+    public static void setEnrolmentIDCounter(int enrolmentIDCounter) {
+        StudentEnrolmentList.enrolmentIDCounter = enrolmentIDCounter;
+    }
+
     public void addStudent(Student s) {
         studentList.add(s);
     }
@@ -23,7 +31,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         courseList.add(c);
     }
 
-    private Student findStudentByID(String id) {
+    protected Student findStudentByID(String id) {
         for (Student student : studentList) {
             if (student.getStudentID().equals(id)) {
                 return student;
@@ -32,7 +40,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         return null;
     }
 
-    private Course findCourseByID(String id) {
+    protected Course findCourseByID(String id) {
         for (Course course : courseList) {
             if (course.getCourseID().equals(id)) {
                 return course;
@@ -52,10 +60,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     @Override
-    public boolean add(String studentID, String courseID, String semester) {
+    public boolean add(Student student, Course course, String semester) {
         enrolmentIDCounter++;
-        Student student = findStudentByID(studentID);
-        Course course = findCourseByID(courseID);
         StudentEnrolment enrolment = new StudentEnrolment(enrolmentIDCounter, student, course, semester);
         enrolmentList.add(enrolment);
         return true;
@@ -98,14 +104,6 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         for (StudentEnrolment enrolment : enrolmentList) {
             System.out.println(enrolment.toString() + "\n");
         }
-    }
-
-    public static int getEnrolmentIDCounter() {
-        return enrolmentIDCounter;
-    }
-
-    public static void setEnrolmentIDCounter(int enrolmentIDCounter) {
-        StudentEnrolmentList.enrolmentIDCounter = enrolmentIDCounter;
     }
 
     public void getEnrolmentList() {

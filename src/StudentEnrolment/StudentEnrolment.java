@@ -50,7 +50,7 @@ public class StudentEnrolment {
         return "StudentEnrolment {" +
                 "ID: " + id +
                 ", Student ID: " + student.getStudentID() +
-                ", Course ID: " + course +
+                ", Course: " + course +
                 ", Semester: " + semester + '\'' +
                 '}';
     }
