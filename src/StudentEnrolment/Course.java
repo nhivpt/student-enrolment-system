@@ -1,7 +1,5 @@
 package StudentEnrolment;
 
-import java.util.ArrayList;
-
 public class Course {
     private String courseID;
     private String courseName;
@@ -35,5 +33,14 @@ public class Course {
 
     public void setCredits(int credits) {
         this.credits = credits;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseID='" + courseID + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", credits=" + credits +
+                '}';
     }
 }

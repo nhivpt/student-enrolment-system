@@ -1,6 +1,5 @@
 package StudentEnrolment;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Student {
@@ -28,5 +27,22 @@ public class Student {
 
     public void setStudentName(String studentName) {
         this.studentName = studentName;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentID='" + studentID + '\'' +
+                ", studentName='" + studentName + '\'' +
+                ", birthdate=" + birthdate +
+                '}';
     }
 }

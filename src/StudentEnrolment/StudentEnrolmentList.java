@@ -4,25 +4,27 @@ import java.util.ArrayList;
 
 public class StudentEnrolmentList implements StudentEnrolmentManager {
 
-    private ArrayList<StudentEnrolment> enrolmentsList;
-    private ArrayList<Student> studentsList = new ArrayList<Student>();
-    private ArrayList<Course> coursesList = new ArrayList<Course>();
     static private int enrolmentIDCounter = 0;
+    private ArrayList<StudentEnrolment> enrolmentList;
+    private ArrayList<Student> studentList;
+    private ArrayList<Course> courseList;
 
     public StudentEnrolmentList() {
-        this.enrolmentsList = new ArrayList<StudentEnrolment>();
+        this.enrolmentList = new ArrayList<StudentEnrolment>();
+        this.courseList = new ArrayList<Course>();
+        this.studentList = new ArrayList<Student>();
     }
 
     public void addStudent(Student s) {
-        studentsList.add(s);
+        studentList.add(s);
     }
 
     public void addCourse(Course c) {
-        coursesList.add(c);
+        courseList.add(c);
     }
 
-    public Student findStudentByID(String id) {
-        for (Student student : studentsList) {
+    private Student findStudentByID(String id) {
+        for (Student student : studentList) {
             if (student.getStudentID().equals(id)) {
                 return student;
             }
@@ -30,8 +32,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         return null;
     }
 
-    public Course findCourseByID(String id) {
-        for (Course course : coursesList) {
+    private Course findCourseByID(String id) {
+        for (Course course : courseList) {
             if (course.getCourseID().equals(id)) {
                 return course;
             }
@@ -40,10 +42,9 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     public boolean isDuplicate(String studentID, String courseID) {
-        for (StudentEnrolment enrolment : enrolmentsList) {
+        for (StudentEnrolment enrolment : enrolmentList) {
             if (enrolment.getStudent().getStudentID().equals(studentID)
-                && enrolment.getCourse().getCourseID().equals(courseID)) {
-                System.out.println("This student has already enrolled in this course.");
+                    && enrolment.getCourse().getCourseID().equals(courseID)) {
                 return true;
             }
         }
@@ -53,22 +54,10 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     @Override
     public boolean add(String studentID, String courseID, String semester) {
         enrolmentIDCounter++;
-        if (isDuplicate(studentID, courseID)) {
-            System.out.println("This student has already enrolled in the course.");
-            return false;
-        }
         Student student = findStudentByID(studentID);
-        if (student == null) {
-            System.out.println("There is no student with that ID. Please try again.");
-            return false;
-        }
         Course course = findCourseByID(courseID);
-        if (course == null) {
-            System.out.println("There is no course with that ID. Please try again.");
-            return false;
-        }
         StudentEnrolment enrolment = new StudentEnrolment(enrolmentIDCounter, student, course, semester);
-        enrolmentsList.add(enrolment);
+        enrolmentList.add(enrolment);
         return true;
     }
 
@@ -86,18 +75,18 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     @Override
     public void delete(int id) {
-        for (StudentEnrolment enrolment : enrolmentsList) {
+        for (StudentEnrolment enrolment : enrolmentList) {
             if (enrolment.getId() == id) {
-                enrolmentsList.remove(id);
+                enrolmentList.remove(id);
             }
         }
     }
 
     @Override
     public StudentEnrolment getOne(String studentID, String courseID) {
-        for (StudentEnrolment enrolment : enrolmentsList) {
+        for (StudentEnrolment enrolment : enrolmentList) {
             if (enrolment.getStudent().getStudentID().equals(studentID)
-            && enrolment.getCourse().getCourseID().equals(courseID)) {
+                    && enrolment.getCourse().getCourseID().equals(courseID)) {
                 return enrolment;
             }
         }
@@ -106,9 +95,46 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     @Override
     public void getAll() {
-        for (StudentEnrolment enrolment : enrolmentsList) {
+        for (StudentEnrolment enrolment : enrolmentList) {
             System.out.println(enrolment.toString() + "\n");
         }
     }
 
+    public static int getEnrolmentIDCounter() {
+        return enrolmentIDCounter;
+    }
+
+    public static void setEnrolmentIDCounter(int enrolmentIDCounter) {
+        StudentEnrolmentList.enrolmentIDCounter = enrolmentIDCounter;
+    }
+
+    public void getEnrolmentList() {
+        for (StudentEnrolment enrolment : enrolmentList) {
+            System.out.println(enrolment.toString());
+        }
+    }
+
+    public void setEnrolmentList(ArrayList<StudentEnrolment> enrolmentList) {
+        this.enrolmentList = enrolmentList;
+    }
+
+    public void getStudentList() {
+        for (Student student : studentList) {
+            System.out.println(student.toString());
+        }
+    }
+
+    public void setStudentList(ArrayList<Student> studentList) {
+        this.studentList = studentList;
+    }
+
+    public void getCourseList() {
+        for (Course course : courseList) {
+            System.out.println(course.toString());
+        }
+    }
+
+    public void setCourseList(ArrayList<Course> courseList) {
+        this.courseList = courseList;
+    }
 }
