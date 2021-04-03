@@ -54,12 +54,12 @@ public class Menu {
 
     public void courseMenu() {
         int option;
-        System.out.println("COURSE MANAGEMENT");
-        System.out.println("------------------");
-        System.out.println("1. View all courses");
-        System.out.println("2. View students of a course");
-        System.out.println("0. Back to main menu");
         while (true) {
+            System.out.println("COURSE MANAGEMENT");
+            System.out.println("------------------");
+            System.out.println("1. View all courses");
+            System.out.println("2. View students of a course");
+            System.out.println("0. Back to main menu");
             option = readInt();
             switch (option) {
                 case 0:
@@ -78,15 +78,15 @@ public class Menu {
 
     public void enrolmentMenu() {
         int option;
-        System.out.println("ENROLMENT MANAGEMENT");
-        System.out.println("------------------");
-        System.out.println("1. View all enrolments");
-        System.out.println("2. View one enrolment");
-        System.out.println("3. Enrol a student");
-        System.out.println("4. Update an enrolment");
-        System.out.println("5. Delete an enrolment");
-        System.out.println("0. Back to main menu");
         while (true) {
+            System.out.println("ENROLMENT MANAGEMENT");
+            System.out.println("------------------");
+            System.out.println("1. View all enrolments");
+            System.out.println("2. View one enrolment");
+            System.out.println("3. Enrol a student");
+            System.out.println("4. Update an enrolment");
+            System.out.println("5. Delete an enrolment");
+            System.out.println("0. Back to main menu");
             option = readInt();
             switch (option) {
                 case 0:
