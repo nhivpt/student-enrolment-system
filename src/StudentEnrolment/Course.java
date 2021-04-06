@@ -4,11 +4,13 @@ public class Course {
     private String courseID;
     private String courseName;
     private int credits;
+    private StudentList studentList;
 
     public Course(String courseID, String courseName, int credits) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.credits = credits;
+        this.studentList = new StudentList();
     }
 
     public String getCourseID() {
@@ -42,5 +44,13 @@ public class Course {
                 ", courseName='" + courseName + '\'' +
                 ", credits=" + credits +
                 '}';
+    }
+
+    public StudentList getStudentList() {
+        return this.studentList;
+    }
+
+    public void setStudentList(StudentList studentList) {
+        this.studentList = studentList;
     }
 }

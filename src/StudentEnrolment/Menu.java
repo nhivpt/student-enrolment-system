@@ -68,6 +68,12 @@ public class Menu {
                     sem.getCourseList();
                     break;
                 case 2:
+                    System.out.print("Enter course ID: ");
+                    String courseID = sc.next();
+                    System.out.print("Enter semester: ");
+                    String semester = sc.next();
+                    System.out.println(courseID + "'s " + "Student List for Semester " + semester);
+                    sem.viewStudentsInCourse(courseID, semester);
                     break;
                 default:
                     System.out.println("Invalid option");
@@ -92,7 +98,7 @@ public class Menu {
                 case 0:
                     return;
                 case 1:
-                    sem.getEnrolmentList();
+                    sem.getAll();
                     break;
                 case 2:
                     break;
@@ -134,5 +140,7 @@ public class Menu {
             semester = sc.next();
             sem.add(student, course, semester);
         }
+        course.getStudentList().addStudent(student);
+        student.getCourseList().addCourse(course);
     }
 }
