@@ -111,18 +111,4 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     public void getCourseList() {
         this.courseList.getCourseList();
     }
-
-    public void viewStudentsInCourse(String courseID, String semester) {
-        boolean found = false;
-        for (StudentEnrolment enrolment : enrolmentList) {
-            if (enrolment.getCourse().getCourseID().equals(courseID) &&
-                    enrolment.getSemester().equals(semester)) {
-                System.out.println(enrolment.getStudent().toString());
-                found = true;
-            }
-        }
-        if (!found) {
-            System.out.println("No available record." + "\n");
-        }
-    }
 }

@@ -43,7 +43,7 @@ public class Course {
                 "courseID='" + courseID + '\'' +
                 ", courseName='" + courseName + '\'' +
                 ", credits=" + credits +
-                '}';
+                "'}";
     }
 
     public StudentList getStudentList() {
@@ -53,4 +53,5 @@ public class Course {
     public void setStudentList(StudentList studentList) {
         this.studentList = studentList;
     }
+
 }

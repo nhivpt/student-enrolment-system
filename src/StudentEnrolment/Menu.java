@@ -1,5 +1,6 @@
 package StudentEnrolment;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
@@ -37,6 +38,8 @@ public class Menu {
                 case 2:
                     courseMenu();
                     break;
+                case 3:
+                    studentMenu();
                 default:
                     System.out.println("Invalid option");
             }
@@ -50,36 +53,6 @@ public class Menu {
         option = Integer.parseInt(sc.next());
 
         return option;
-    }
-
-    public void courseMenu() {
-        int option;
-        while (true) {
-            System.out.println("COURSE MANAGEMENT");
-            System.out.println("------------------");
-            System.out.println("1. View all courses");
-            System.out.println("2. View students of a course");
-            System.out.println("0. Back to main menu");
-            option = readInt();
-            switch (option) {
-                case 0:
-                    return;
-                case 1:
-                    sem.getCourseList();
-                    break;
-                case 2:
-                    System.out.print("Enter course ID: ");
-                    String courseID = sc.next();
-                    System.out.print("Enter semester: ");
-                    String semester = sc.next();
-                    System.out.println(courseID + "'s " + "Student List for Semester " + semester);
-                    sem.viewStudentsInCourse(courseID, semester);
-                    break;
-                default:
-                    System.out.println("Invalid option");
-                    break;
-            }
-        }
     }
 
     public void enrolmentMenu() {
@@ -101,6 +74,16 @@ public class Menu {
                     sem.getAll();
                     break;
                 case 2:
+                    System.out.print("Student ID: ");
+                    String studentID = sc.next();
+                    System.out.print("Course ID: ");
+                    String courseID = sc.next();
+                    StudentEnrolment enrolment = sem.getOne(studentID, courseID);
+                    if (enrolment == null) {
+                        System.out.println("This student is not enrolled in the course " + courseID + "\n");
+                        break;
+                    }
+                    System.out.println(enrolment.toString() + "\n");
                     break;
                 case 3:
                     System.out.println("---Course List---");
@@ -116,6 +99,95 @@ public class Menu {
         }
     }
 
+    public void courseMenu() {
+        int option;
+        String courseID, semester;
+        while (true) {
+            System.out.println("COURSE MANAGEMENT");
+            System.out.println("------------------");
+            System.out.println("1. View all courses");
+            System.out.println("2. View all courses in a semester");
+            System.out.println("3. View students of a course");
+            System.out.println("0. Back to main menu");
+            option = readInt();
+            switch (option) {
+                case 0:
+                    return;
+                case 1:
+                    sem.getCourseList();
+                    break;
+                case 2:
+                    System.out.print("Enter semester: ");
+                    semester = sc.next();
+                    viewCoursesOfSemester(semester);
+                    break;
+                case 3:
+                    System.out.print("Enter course ID: ");
+                    courseID = sc.next();
+                    System.out.print("Enter semester: ");
+                    semester = sc.next();
+                    boolean found = false;
+                    viewStudentsOfACourse(courseID, semester, found);
+                    break;
+                default:
+                    System.out.println("Invalid option");
+                    break;
+            }
+        }
+    }
+
+    private void viewStudentsOfACourse(String courseID, String semester, boolean found) {
+        System.out.println(courseID + "'s " + "Student List for Semester " + semester);
+        for (StudentEnrolment enrolment : sem.getEnrolmentList()) {
+            if (enrolment.getCourse().getCourseID().equals(courseID) &&
+                enrolment.getSemester().equals(semester)) {
+                System.out.println(enrolment.getStudent().toString());
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No available record.");
+        }
+        return;
+    }
+
+    private void viewCoursesOfSemester(String semester) {
+        ArrayList<Course> courses = new ArrayList<>();
+        for (StudentEnrolment enrolment : sem.getEnrolmentList()) {
+            if (enrolment.getSemester().equals(semester)) {
+                if (!courses.contains(enrolment.getCourse())) {
+                    courses.add(enrolment.getCourse());
+                }
+            }
+        }
+        if (courses.size() == 0) {
+            System.out.println("No course available in semester " + semester);
+        } else {
+            System.out.println("Courses offered in semester " + semester);
+            for (Course course : courses) {
+                System.out.println(course.toString());
+            }
+        }
+    }
+
+    private void studentMenu() {
+        int option;
+        while (true) {
+            System.out.println("STUDENT MANAGEMENT");
+            System.out.println("------------------");
+            System.out.println("1. View all students");
+            System.out.println("2. View one student's courses");
+            System.out.println("0. Back to main menu");
+            option = readInt();
+            switch (option) {
+                case 0:
+                    return;
+                case 1:
+
+            }
+        }
+    }
+
     public void enrol() {
         String studentID, courseID, semester;
         System.out.println("Please enter student's ID, course's ID and semester to enrol.");
@@ -123,23 +195,26 @@ public class Menu {
         studentID = sc.next();
         Student student = sem.findStudentByID(studentID);
         if (student == null) {
-            System.out.println("There is no student with the ID " + studentID);
+            System.out.println("There is no student with the ID " + studentID + "\n");
             return;
         }
         System.out.print("Course ID: ");
         courseID = sc.next();
         Course course = sem.findCourseByID(courseID);
         if (course == null) {
-            System.out.println("There is no course with the ID " + courseID);
+            System.out.println("There is no course with the ID " + courseID + "\n");
             return;
         }
         if (sem.isDuplicate(studentID, courseID)) {
-            System.out.println("This student has already enrolled in the course.");
-        } else {
-            System.out.print("Semester: ");
-            semester = sc.next();
-            sem.add(student, course, semester);
+            System.out.println("This student has already enrolled in the course.\n");
+            return;
         }
+        System.out.print("Semester: ");
+        semester = sc.next();
+        sem.add(student, course, semester);
+
+        System.out.println("Enrolled successfully.");
+
         course.getStudentList().addStudent(student);
         student.getCourseList().addCourse(course);
     }
