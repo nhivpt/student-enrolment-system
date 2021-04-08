@@ -12,7 +12,7 @@ public class Main {
         StudentList studentList = new StudentList();
         CourseList courseList = new CourseList();
 
-        StudentEnrolmentList sem = new StudentEnrolmentList("/Users/Nhi Vo/IdeaProjects/FP_A1/src/StudentEnrolment/default.csv", studentList, courseList);
+        StudentEnrolmentList sem = new StudentEnrolmentList("src/StudentEnrolment/default.csv", studentList, courseList);
 
 //        sem.addCourse(new Course("COSC2020", "Introduction to Software Development", 12));
 //        sem.addCourse(new Course("COSC2589", "Web Programming", 12));
