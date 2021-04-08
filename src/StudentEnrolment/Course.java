@@ -46,6 +46,12 @@ public class Course {
                 "'}";
     }
 
+    public String toCSV() {
+        return  courseID + ","+
+                courseName + ","+
+                credits +"\n";
+    }
+
     public StudentList getStudentList() {
         return this.studentList;
     }

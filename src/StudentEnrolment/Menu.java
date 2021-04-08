@@ -1,5 +1,6 @@
 package StudentEnrolment;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -40,6 +41,7 @@ public class Menu {
                     break;
                 case 3:
                     studentMenu();
+                    break;
                 default:
                     System.out.println("Invalid option");
             }
@@ -92,6 +94,19 @@ public class Menu {
                     sem.getCourseList();
                     enrol();
                     break;
+                case 4:
+
+                case 5:
+                    System.out.println("---Enrolment List---");
+                    sem.getAll();
+                    System.out.print("Please enter the ID of the enrolment you want to delete: ");
+                    int id = Integer.parseInt(sc.next());
+                    if (sem.delete(id)) {
+                        System.out.println("Enrolment deleted.");
+                    } else {
+                        System.out.println("No enrolment with that ID.");
+                    }
+                    break;
                 default:
                     System.out.println("Invalid option");
                     break;
@@ -126,8 +141,7 @@ public class Menu {
                     courseID = sc.next();
                     System.out.print("Enter semester: ");
                     semester = sc.next();
-                    boolean found = false;
-                    viewStudentsOfACourse(courseID, semester, found);
+                    viewStudentsOfACourse(courseID, semester);
                     break;
                 default:
                     System.out.println("Invalid option");
@@ -136,11 +150,12 @@ public class Menu {
         }
     }
 
-    private void viewStudentsOfACourse(String courseID, String semester, boolean found) {
+    private void viewStudentsOfACourse(String courseID, String semester) {
+        boolean found = false;
         System.out.println(courseID + "'s " + "Student List for Semester " + semester);
         for (StudentEnrolment enrolment : sem.getEnrolmentList()) {
             if (enrolment.getCourse().getCourseID().equals(courseID) &&
-                enrolment.getSemester().equals(semester)) {
+                    enrolment.getSemester().equals(semester)) {
                 System.out.println(enrolment.getStudent().toString());
                 found = true;
             }
@@ -148,7 +163,6 @@ public class Menu {
         if (!found) {
             System.out.println("No available record.");
         }
-        return;
     }
 
     private void viewCoursesOfSemester(String semester) {
@@ -167,6 +181,38 @@ public class Menu {
             for (Course course : courses) {
                 System.out.println(course.toString());
             }
+        }
+
+        String option = writeFilePrompt(semester, courses);
+        if (option.equals("Y") || option.equals("y")) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Course course : courses) {
+                stringBuilder.append(course.toCSV());
+            }
+            String string = stringBuilder.toString();
+            writeToFile(string, semester + "_Courses" + ".csv");
+            System.out.println("File saved successfully.");
+            System.out.println("File will be accessible after the program is closed");
+            return;
+        }
+        else if (option.equals("N") || option.equals("n")) {
+            return;
+        }
+    }
+
+    private String writeFilePrompt(String semester, ArrayList<Course> courses) {
+        System.out.println("Would you like to save a CSV file of this? (Y/n)");
+        return sc.next();
+    }
+
+    private void writeToFile(String s, String filename) {
+        FileOutputStream write_file;
+        try {
+            write_file = new FileOutputStream(filename);
+            write_file.write(s.getBytes());
+            write_file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

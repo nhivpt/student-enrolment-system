@@ -23,6 +23,11 @@ public class CourseList {
         return null;
     }
 
+    public boolean contains(Course c) {
+        return courseList.contains(c);
+    }
+
+
     public void getCourseList() {
         for (Course course : courseList) {
             System.out.println(course.toString());

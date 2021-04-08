@@ -23,6 +23,10 @@ public class StudentList {
         return null;
     }
 
+    public boolean contains(Student s) {
+        return studentList.contains(s);
+    }
+
     public void getStudentList() {
         for (Student student : studentList) {
             System.out.println(student.toString());
