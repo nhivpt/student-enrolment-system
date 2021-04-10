@@ -1,5 +1,6 @@
 package StudentEnrolment;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Student {
@@ -7,12 +8,15 @@ public class Student {
     private String studentName;
     private Date birthdate;
     private CourseList courseList;
+    private SimpleDateFormat df;
 
     public Student(String studentID, String studentName, Date birthdate) {
         this.studentID = studentID;
         this.studentName = studentName;
         this.birthdate = birthdate;
         this.courseList = new CourseList();
+        this.df = new SimpleDateFormat("MM/dd/yyyy");
+
     }
 
     public String getStudentID() {
@@ -41,10 +45,11 @@ public class Student {
 
     @Override
     public String toString() {
+        String bdStr = df.format(birthdate);
         return "Student{" +
                 "studentID='" + studentID + '\'' +
                 ", studentName='" + studentName + '\'' +
-                ", birthdate=" + birthdate +
+                ", birthdate=" + bdStr.split(" ")[0] +
                 '}';
     }
 
@@ -54,5 +59,12 @@ public class Student {
 
     public void setCourseList(CourseList courseList) {
         this.courseList = courseList;
+    }
+
+    public String toCSV() {
+        String bdStr = df.format(birthdate);
+        return studentID + ","+
+                studentName + ","+
+                bdStr.split(" ")[0] +"\n";
     }
 }

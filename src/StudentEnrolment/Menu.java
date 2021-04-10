@@ -1,8 +1,7 @@
 package StudentEnrolment;
 
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
 
@@ -89,9 +88,9 @@ public class Menu {
                     break;
                 case 3:
                     System.out.println("---Course List---");
-                    sem.getStudentList();
+                    sem.printStudentList();
                     System.out.println("---Student List---");
-                    sem.getCourseList();
+                    sem.printCourseList();
                     enrol();
                     break;
                 case 4:
@@ -129,7 +128,7 @@ public class Menu {
                 case 0:
                     return;
                 case 1:
-                    sem.getCourseList();
+                    sem.printCourseList();
                     break;
                 case 2:
                     System.out.print("Enter semester: ");
@@ -152,25 +151,37 @@ public class Menu {
 
     private void viewStudentsOfACourse(String courseID, String semester) {
         boolean found = false;
+        StudentList students = new StudentList();
         System.out.println(courseID + "'s " + "Student List for Semester " + semester);
         for (StudentEnrolment enrolment : sem.getEnrolmentList()) {
             if (enrolment.getCourse().getCourseID().equals(courseID) &&
                     enrolment.getSemester().equals(semester)) {
-                System.out.println(enrolment.getStudent().toString());
+                students.addStudent(enrolment.getStudent());
                 found = true;
             }
         }
         if (!found) {
             System.out.println("No available record.");
+        } else {
+            students.printStudentList();
+            System.out.println("Would you like to save a CSV file of this? (Y/n)");
+            String option = sc.next();
+            if (option.equals("Y") || option.equals("y")) {
+                studentCSV(students, courseID, semester);
+                return;
+            } else if (option.equals("N") || option.equals("n")) {
+                System.out.println("Invalid option.");
+                return;
+            }
         }
     }
 
     private void viewCoursesOfSemester(String semester) {
-        ArrayList<Course> courses = new ArrayList<>();
+        CourseList courses = new CourseList();
         for (StudentEnrolment enrolment : sem.getEnrolmentList()) {
             if (enrolment.getSemester().equals(semester)) {
-                if (!courses.contains(enrolment.getCourse())) {
-                    courses.add(enrolment.getCourse());
+                if (courses.findByID(enrolment.getCourse().getCourseID()) == null) {
+                    courses.addCourse(enrolment.getCourse());
                 }
             }
         }
@@ -178,42 +189,30 @@ public class Menu {
             System.out.println("No course available in semester " + semester);
         } else {
             System.out.println("Courses offered in semester " + semester);
-            for (Course course : courses) {
-                System.out.println(course.toString());
+            courses.printCourseList();
+            System.out.println("Would you like to save a CSV file of this? (Y/n)");
+            String option = sc.next();
+            if (option.equals("Y") || option.equals("y")) {
+                courseCSV(courses, semester);
+                return;
+            } else if (option.equals("N") || option.equals("n")) {
+                return;
+            } else {
+                System.out.println("Invalid option.");
+                return;
             }
-        }
-
-        String option = writeFilePrompt(semester, courses);
-        if (option.equals("Y") || option.equals("y")) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Course course : courses) {
-                stringBuilder.append(course.toCSV());
-            }
-            String string = stringBuilder.toString();
-            writeToFile(string, semester + "_Courses" + ".csv");
-            System.out.println("File saved successfully.");
-            System.out.println("File will be accessible after the program is closed");
-            return;
-        }
-        else if (option.equals("N") || option.equals("n")) {
-            return;
         }
     }
 
-    private String writeFilePrompt(String semester, ArrayList<Course> courses) {
-        System.out.println("Would you like to save a CSV file of this? (Y/n)");
-        return sc.next();
-    }
-
-    private void writeToFile(String s, String filename) {
-        FileOutputStream write_file;
-        try {
-            write_file = new FileOutputStream(filename);
-            write_file.write(s.getBytes());
-            write_file.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void courseCSV(CourseList courses, String semester) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Course c : courses.getCourseList()) {
+            stringBuilder.append(c.toCSV());
         }
+        String string = stringBuilder.toString();
+        writeToFile(string, semester + "_Courses" + ".csv");
+        System.out.println("File saved successfully.");
+        System.out.println("The file will be available after the program exits.");
     }
 
     private void studentMenu() {
@@ -229,8 +228,46 @@ public class Menu {
                 case 0:
                     return;
                 case 1:
-
+                    sem.printStudentList();
+                    break;
+                case 2:
+                    System.out.print("Student ID: ");
+                    String studentID = sc.next();
+                    System.out.print("Semester: ");
+                    String semester = sc.next();
+                    System.out.println(studentID + "'s Course List for Semester " + semester);
+                    for (StudentEnrolment e : sem.getEnrolmentList()) {
+                        if (e.getStudent().getStudentID().equals(studentID) && e.getSemester().equals(semester)) {
+                            System.out.println(e.getCourse().toString());
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid option.");
+                    break;
             }
+        }
+    }
+
+    private void studentCSV(StudentList students, String courseID, String semester) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Student s : students.getStudentList()) {
+            stringBuilder.append(s.toCSV());
+        }
+        String string = stringBuilder.toString();
+        writeToFile(string, semester + "_" + courseID + "_Students" + ".csv");
+        System.out.println("File saved successfully.");
+        System.out.println("The file will be available after the program exits.");
+    }
+
+    private void writeToFile(String s, String filename) {
+        FileOutputStream write_file;
+        try {
+            write_file = new FileOutputStream(filename);
+            write_file.write(s.getBytes());
+            write_file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

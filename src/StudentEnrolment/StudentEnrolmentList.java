@@ -22,7 +22,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         String line;
         BufferedReader br = new BufferedReader(new FileReader(filename));
         while ((line = br.readLine()) != null) {
-            String[] split = line.split(",", 7); // Retrieve each part of the student information , assuming each field is separated with a "," and each line is new entry.
+            String[] split = line.split(",");
             Student s = new Student(split[0], split[1], df.parse(split[2]));
             Course c = new Course(split[3], split[4], Integer.parseInt(split[5]));
             if (this.studentList.findByID(split[0]) == null) {
@@ -31,22 +31,14 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
             if (this.courseList.findByID(split[3]) == null) {
                 this.courseList.addCourse(c);
             }
-//            if (!this.studentList.contains(s)) {
-//              this.studentList.addStudent(new Student(split[0], split[1], df.parse(split[2])));
-//            }
-//            this.courseList.addCourse(c);
             enrolmentIDCounter++;
             this.enrolmentList.add(new StudentEnrolment(enrolmentIDCounter, s, c, split[6]));
-//            System.out.println("0 " + split[0] + " 1 " + split[1] + " 2 " + split[2] + " 3 " +
-//            split[3] + " 4 " + split[4] + " 5 " + split[5] + " 6 " + split[6]);
         }
     }
 
-//    public StudentEnrolmentList(CourseList courseList, StudentList studentList) {
-////        this.enrolmentList = new ArrayList<>();
-//        this.courseList = courseList;
-//        this.studentList = studentList;
-//    }
+    public StudentEnrolmentList() {
+        this.enrolmentList = new ArrayList<>();
+    }
 
     public static int getEnrolmentIDCounter() {
         return enrolmentIDCounter;
@@ -140,11 +132,19 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         this.enrolmentList = enrolmentList;
     }
 
-    public void getStudentList() {
-        this.studentList.getStudentList();
+    public StudentList getStudentList() {
+        return studentList;
     }
 
-    public void getCourseList() {
-        this.courseList.getCourseList();
+    public CourseList getCourseList() {
+        return courseList;
+    }
+
+    public void printStudentList() {
+        this.studentList.printStudentList();
+    }
+
+    public void printCourseList() {
+        this.courseList.printCourseList();
     }
 }

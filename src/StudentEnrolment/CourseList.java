@@ -23,15 +23,22 @@ public class CourseList {
         return null;
     }
 
+    public int size() {
+        return courseList.size();
+    }
+
     public boolean contains(Course c) {
         return courseList.contains(c);
     }
 
-
-    public void getCourseList() {
+    public void printCourseList() {
         for (Course course : courseList) {
             System.out.println(course.toString());
         }
+    }
+
+    public ArrayList<Course> getCourseList() {
+        return this.courseList;
     }
 
 }

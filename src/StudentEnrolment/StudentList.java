@@ -27,10 +27,14 @@ public class StudentList {
         return studentList.contains(s);
     }
 
-    public void getStudentList() {
+    public void printStudentList() {
         for (Student student : studentList) {
             System.out.println(student.toString());
         }
+    }
+
+    public ArrayList<Student> getStudentList() {
+        return studentList;
     }
 
 }
