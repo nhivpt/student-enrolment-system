@@ -85,31 +85,17 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     @Override
-    public boolean update(int id, String studentID, String courseID, String semester) {
+    public boolean update(int id, Student student, Course course, String semester) {
         StudentEnrolment enrolment = getOne(id);
 
-        studentID = studentID.toUpperCase();
-        courseID = courseID.toUpperCase();
         semester = semester.toUpperCase();
 
-        if (isDuplicate(studentID, courseID)) {
-            return false;
-        }
-        Student student = findStudentByID(studentID);
-        Course course = findCourseByID(courseID);
-
-        if (student == null) {
-            System.out.println("No student with the ID " + studentID);
+        if (isDuplicate(student.getStudentID(), course.getCourseID())) {
             return false;
         }
 
-        if (course == null) {
-            System.out.println("No course with the ID " + courseID);
-            return false;
-        }
-
-        enrolment.setStudent(findStudentByID(studentID));
-        enrolment.setCourse(findCourseByID(courseID));
+        enrolment.setStudent(student);
+        enrolment.setCourse(course);
         enrolment.setSemester(semester);
         return true;
     }

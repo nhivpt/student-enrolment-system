@@ -2,14 +2,15 @@ package StudentEnrolment;
 
 import java.io.FileOutputStream;
 import java.util.*;
+
 public class Menu {
 
     private Scanner sc;
     private StudentEnrolmentList sem;
 
     public Menu(StudentEnrolmentList sem) {
-        this.sc = new Scanner(System.in);
         this.sem = sem;
+        this.sc = new Scanner(System.in);
     }
 
     public int printMenu() {
@@ -26,22 +27,26 @@ public class Menu {
 
     public void start() {
         while (true) {
-            int option = printMenu();
-            switch (option) {
-                case 0:
-                    System.out.println("Exiting...");
-                    System.exit(0);
-                case 1:
-                    enrolmentMenu();
-                    break;
-                case 2:
-                    courseMenu();
-                    break;
-                case 3:
-                    studentMenu();
-                    break;
-                default:
-                    System.out.println("Invalid option");
+            try {
+                int option = printMenu();
+                switch (option) {
+                    case 0:
+                        System.out.println("Exiting...");
+                        System.exit(0);
+                    case 1:
+                        enrolmentMenu();
+                        break;
+                    case 2:
+                        courseMenu();
+                        break;
+                    case 3:
+                        studentMenu();
+                        break;
+                    default:
+                        System.out.println("Invalid option");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("You must enter a number.");
             }
         }
     }
@@ -66,77 +71,100 @@ public class Menu {
             System.out.println("4. Update an enrolment");
             System.out.println("5. Delete an enrolment");
             System.out.println("0. Back to main menu");
-            option = readInt();
-            switch (option) {
-                case 0:
-                    return;
-                case 1:
-                    sem.getAll();
-                    break;
-                case 2:
-                    String studentID;
-                    do {
-                        System.out.print("Student ID: ");
-                        studentID = sc.next();
-                    } while (checkStudentID(studentID));
-                    String courseID;
-                    do {
-                        System.out.print("Course ID: ");
-                        courseID = sc.next();
-                    } while (checkCourseID(courseID));
-                    StudentEnrolment enrolment = sem.getOne(studentID, courseID);
-                    if (enrolment == null) {
-                        System.out.println("This student is not enrolled in the course " + courseID + "\n");
+            try {
+                option = readInt();
+                switch (option) {
+                    case 0:
+                        return;
+                    case 1:
+                        sem.getAll();
                         break;
-                    }
-                    System.out.println(enrolment + "\n");
-                    break;
-                case 3:
-                    System.out.println("---Course List---");
-                    sem.printStudentList();
-                    System.out.println("---Student List---");
-                    sem.printCourseList();
-                    enrol();
-                    break;
-                case 4:
-                    sem.getAll();
-                    System.out.println("Please enter the ID of the enrolment you want to update: ");
-                    int eID = Integer.parseInt(sc.next());
-                    System.out.print("New Student's ID: ");
-                    String sID = sc.next();
-                    System.out.print("New Course's ID: ");
-                    String cID = sc.next();
-                    String semester;
-                    do {
-                        System.out.print("Semester: ");
-                        semester = sc.next();
-                    } while (checkSemester(semester));
-                    if (sem.update(eID, sID, cID, semester)) {
-                        System.out.println("Update successfully.");
-                    } else {
-                        System.out.println("Update failed. Please try again.");
-                    }
-                    break;
-                case 5:
-                    sem.getAll();
-                    System.out.print("Please enter the ID of the enrolment you want to delete: ");
-                    int id = Integer.parseInt(sc.next());
-                    if (sem.delete(id)) {
-                        System.out.println("Enrolment deleted.");
-                    } else {
-                        System.out.println("No enrolment with that ID.");
-                    }
-                    break;
-                default:
-                    System.out.println("Invalid option");
-                    break;
+                    case 2:
+                        String studentID;
+                        do {
+                            System.out.print("Student ID: ");
+                            studentID = sc.next();
+                        } while (checkStudentID(studentID));
+                        String courseID;
+                        do {
+                            System.out.print("Course ID: ");
+                            courseID = sc.next();
+                        } while (checkCourseID(courseID));
+                        StudentEnrolment enrolment = sem.getOne(studentID, courseID);
+                        if (enrolment == null) {
+                            System.out.println("This student is not enrolled in the course " + courseID + "\n");
+                            break;
+                        }
+                        System.out.println(enrolment + "\n");
+                        break;
+                    case 3:
+                        System.out.println("---Course List---");
+                        sem.printStudentList();
+                        System.out.println("---Student List---");
+                        sem.printCourseList();
+                        enrol();
+                        break;
+                    case 4:
+                        sem.getAll();
+                        System.out.println("Please enter the ID of the enrolment you want to update: ");
+                        int eID = Integer.parseInt(sc.next());
+                        Student student;
+                        do {
+
+                            System.out.print("New Student's ID: ");
+                            String sID = sc.next();
+                            sID = sID.toUpperCase();
+                            student = sem.findStudentByID(sID);
+                            if (student == null) {
+                                System.out.println("No student with the ID " + sID);
+                            }
+                        } while (student == null);
+                        Course course;
+                        do {
+
+                            System.out.print("New Course's ID: ");
+                            String cID = sc.next();
+                            cID = cID.toUpperCase();
+
+                            course = sem.findCourseByID(cID);
+                            if (course == null) {
+                                System.out.println("No course with the ID " + cID);
+                            }
+                        } while (course == null);
+                        String semester;
+                        do {
+                            System.out.print("Semester: ");
+                            semester = sc.next();
+                            semester = semester.toUpperCase();
+                        } while (checkSemester(semester));
+                        if (sem.update(eID, student, course, semester)) {
+                            System.out.println("Update successfully.");
+                        } else {
+                            System.out.println("Update failed. Please try again.");
+                        }
+                        break;
+                    case 5:
+                        sem.getAll();
+                        System.out.print("Please enter the ID of the enrolment you want to delete: ");
+                        int id = Integer.parseInt(sc.next());
+                        if (sem.delete(id)) {
+                            System.out.println("Enrolment deleted.");
+                        } else {
+                            System.out.println("No enrolment with that ID.");
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid option");
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("You must enter a number.");
             }
         }
     }
 
     public void courseMenu() {
         int option;
-        String courseID;
         while (true) {
             System.out.println("COURSE MANAGEMENT");
             System.out.println("------------------");
@@ -144,37 +172,41 @@ public class Menu {
             System.out.println("2. View all courses in a semester");
             System.out.println("3. View students of a course");
             System.out.println("0. Back to main menu");
-            option = readInt();
-            switch (option) {
-                case 0:
-                    return;
-                case 1:
-                    sem.printCourseList();
-                    break;
-                case 2:
-                    String semester;
-                    do {
-                        System.out.print("Semester: ");
-                        semester = sc.next();
-                    } while (checkSemester(semester));
-                    viewCoursesOfSemester(semester);
-                    break;
-                case 3:
-                    String courseID1;
-                    do {
-                        System.out.print("Course ID: ");
-                        courseID1 = sc.next();
-                    } while (checkCourseID(courseID1));
-                    String semester1;
-                    do {
-                        System.out.print("Semester: ");
-                        semester1 = sc.next();
-                    } while (checkSemester(semester1));
-                    viewStudentsOfACourse(courseID1, semester1);
-                    break;
-                default:
-                    System.out.println("Invalid option");
-                    break;
+            try {
+                option = readInt();
+                switch (option) {
+                    case 0:
+                        return;
+                    case 1:
+                        sem.printCourseList();
+                        break;
+                    case 2:
+                        String semester;
+                        do {
+                            System.out.print("Semester: ");
+                            semester = sc.next();
+                        } while (checkSemester(semester));
+                        viewCoursesOfSemester(semester);
+                        break;
+                    case 3:
+                        String courseID1;
+                        do {
+                            System.out.print("Course ID: ");
+                            courseID1 = sc.next();
+                        } while (checkCourseID(courseID1));
+                        String semester1;
+                        do {
+                            System.out.print("Semester: ");
+                            semester1 = sc.next();
+                        } while (checkSemester(semester1));
+                        viewStudentsOfACourse(courseID1, semester1);
+                        break;
+                    default:
+                        System.out.println("Invalid option");
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("You must enter a number.");
             }
         }
     }
@@ -249,34 +281,39 @@ public class Menu {
     private void studentMenu() {
         int option;
         while (true) {
-            System.out.println("STUDENT MANAGEMENT");
-            System.out.println("------------------");
-            System.out.println("1. View all students");
-            System.out.println("2. View one student's courses");
-            System.out.println("0. Back to main menu");
-            option = readInt();
-            switch (option) {
-                case 0:
-                    return;
-                case 1:
-                    sem.printStudentList();
-                    break;
-                case 2:
-                    String studentID;
-                    do {
-                        System.out.print("Student ID: ");
-                        studentID = sc.next();
-                    } while (checkStudentID(studentID));
-                    String semester;
-                    do {
-                        System.out.print("Semester: ");
-                        semester = sc.next();
-                    } while (checkSemester(semester));
-                    viewCoursesOfAStudent(studentID, semester);
-                    break;
-                default:
-                    System.out.println("Invalid option.");
-                    break;
+            try {
+                System.out.println("STUDENT MANAGEMENT");
+                System.out.println("------------------");
+                System.out.println("1. View all students");
+                System.out.println("2. View one student's courses");
+                System.out.println("0. Back to main menu");
+                option = readInt();
+                switch (option) {
+                    case 0:
+                        return;
+                    case 1:
+                        sem.printStudentList();
+                        break;
+                    case 2:
+                        String studentID;
+                        do {
+                            System.out.print("Student ID: ");
+                            studentID = sc.next();
+                        } while (checkStudentID(studentID));
+                        String semester;
+                        do {
+                            System.out.print("Semester: ");
+                            semester = sc.next();
+                        } while (checkSemester(semester));
+                        viewCoursesOfAStudent(studentID, semester);
+                        break;
+                    default:
+                        System.out.println("Invalid option.");
+                        break;
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("You must enter a number.");
             }
         }
     }
@@ -293,7 +330,7 @@ public class Menu {
         }
 
         if (courses.size() == 0) {
-            System.out.println("No course available.");
+            System.out.println("No course enrolled by this student for semester " + semester);
         } else {
             System.out.println("Courses enrolled by this student in semester " + semester);
             courses.printCourseList();
@@ -421,3 +458,4 @@ public class Menu {
         return false;
     }
 }
+
