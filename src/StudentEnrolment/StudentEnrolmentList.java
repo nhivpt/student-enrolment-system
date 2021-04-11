@@ -65,6 +65,8 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     public boolean isDuplicate(String studentID, String courseID) {
+        studentID = studentID.toUpperCase();
+        courseID = courseID.toUpperCase();
         for (StudentEnrolment enrolment : enrolmentList) {
             if (enrolment.getStudent().getStudentID().equals(studentID)
                     && enrolment.getCourse().getCourseID().equals(courseID)) {
@@ -83,11 +85,29 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     @Override
-    public boolean update(String studentID, String courseID, String semester) {
-        StudentEnrolment enrolment = getOne(studentID, courseID);
+    public boolean update(int id, String studentID, String courseID, String semester) {
+        StudentEnrolment enrolment = getOne(id);
+
+        studentID = studentID.toUpperCase();
+        courseID = courseID.toUpperCase();
+        semester = semester.toUpperCase();
+
         if (isDuplicate(studentID, courseID)) {
             return false;
         }
+        Student student = findStudentByID(studentID);
+        Course course = findCourseByID(courseID);
+
+        if (student == null) {
+            System.out.println("No student with the ID " + studentID);
+            return false;
+        }
+
+        if (course == null) {
+            System.out.println("No course with the ID " + courseID);
+            return false;
+        }
+
         enrolment.setStudent(findStudentByID(studentID));
         enrolment.setCourse(findCourseByID(courseID));
         enrolment.setSemester(semester);
@@ -107,10 +127,22 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     @Override
+    public StudentEnrolment getOne(int id) {
+        for (StudentEnrolment enrolment : enrolmentList) {
+            if (enrolment.getId() == id) {
+                return enrolment;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public StudentEnrolment getOne(String studentID, String courseID) {
+        studentID = studentID.toUpperCase();
+        courseID = courseID.toUpperCase();
         for (StudentEnrolment enrolment : enrolmentList) {
             if (enrolment.getStudent().getStudentID().equals(studentID)
-                    && enrolment.getCourse().getCourseID().equals(courseID)) {
+                && enrolment.getCourse().getCourseID().equals(courseID)) {
                 return enrolment;
             }
         }
@@ -119,6 +151,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
 
     @Override
     public void getAll() {
+        System.out.println("---Enrolment List---");
         for (StudentEnrolment enrolment : enrolmentList) {
             System.out.println(enrolment.toString());
         }

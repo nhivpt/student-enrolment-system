@@ -1,5 +1,7 @@
 package StudentEnrolment;
 
+import java.util.Locale;
+
 public class Course {
     private String courseID;
     private String courseName;
