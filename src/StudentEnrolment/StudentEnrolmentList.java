@@ -85,9 +85,7 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     }
 
     @Override
-    public boolean update(int id, Student student, Course course, String semester) {
-        StudentEnrolment enrolment = getOne(id);
-
+    public boolean update(StudentEnrolment enrolment, Student student, Course course, String semester) {
         semester = semester.toUpperCase();
 
         if (isDuplicate(student.getStudentID(), course.getCourseID())) {

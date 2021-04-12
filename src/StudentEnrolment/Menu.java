@@ -260,11 +260,20 @@ public class Menu {
 
     private void updateEnrolment() {
         sem.getAll();
-        System.out.print("Please enter the ID of the enrolment you want to update: ");
-        int eID = Integer.parseInt(sc.next());
+
+        StudentEnrolment enrolment;
+
+        do {
+            System.out.print("Please enter the ID of the enrolment you want to update: ");
+            int eID = Integer.parseInt(sc.next());
+            enrolment = sem.getOne(eID);
+            if (enrolment == null) {
+                System.out.println("No enrolment with that ID. Please try again.");
+            }
+        } while (enrolment == null);
+
         Student student;
         do {
-
             System.out.print("New Student's ID: ");
             String sID = sc.next();
             sID = sID.toUpperCase();
@@ -291,10 +300,10 @@ public class Menu {
             semester = sc.next();
             semester = semester.toUpperCase();
         } while (checkSemester(semester));
-        if (sem.update(eID, student, course, semester)) {
+        if (sem.update(enrolment, student, course, semester)) {
             System.out.println("Update successfully.");
         } else {
-            System.out.println("Update failed. This student is already enrolled in the course. Please try again.");
+            System.out.println("Update failed. Please try again.");
         }
     }
 
