@@ -241,7 +241,7 @@ public class Menu {
             return;
         }
         if (sem.isDuplicate(studentID, courseID)) {
-            System.out.println("This student has already enrolled in the course.\n");
+            System.out.println("This student is already enrolled in the course.\n");
             return;
         }
         do {
@@ -260,7 +260,7 @@ public class Menu {
 
     private void updateEnrolment() {
         sem.getAll();
-        System.out.println("Please enter the ID of the enrolment you want to update: ");
+        System.out.print("Please enter the ID of the enrolment you want to update: ");
         int eID = Integer.parseInt(sc.next());
         Student student;
         do {
@@ -294,7 +294,7 @@ public class Menu {
         if (sem.update(eID, student, course, semester)) {
             System.out.println("Update successfully.");
         } else {
-            System.out.println("Update failed. Please try again.");
+            System.out.println("Update failed. This student is already enrolled in the course. Please try again.");
         }
     }
 
@@ -410,7 +410,7 @@ public class Menu {
             writeToFile(string, studentID + "_Courses_" + semester + ".csv");
         }
         System.out.println("File saved successfully.");
-        System.out.println("The file will be available after the program exits.");
+        System.out.println("The file will be available after the program exits.\n");
     }
 
     private void studentCSV(StudentList students, String courseID, String semester) {
@@ -421,7 +421,7 @@ public class Menu {
         String string = stringBuilder.toString();
         writeToFile(string, semester + "_" + courseID + "_Students" + ".csv");
         System.out.println("File saved successfully.");
-        System.out.println("The file will be available after the program exits.");
+        System.out.println("The file will be available after the program exits.\n");
     }
 
     private void writeToFile(String s, String filename) {

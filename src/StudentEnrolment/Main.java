@@ -1,3 +1,11 @@
+/*
+
+COSC2440 - Assignment 1
+STUDENT ENROLMENT SYSTEM
+Student ID: s3754467
+Student Name: Vo Phuong Thao Nhi
+
+*/
 package StudentEnrolment;
 
 import java.io.IOException;
