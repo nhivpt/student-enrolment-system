@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.*;
 
-public class AddEnrolment {
+public class DeleteEnrolment {
 
     StudentList studentList = new StudentList();
     CourseList courseList = new CourseList();
@@ -18,7 +18,7 @@ public class AddEnrolment {
             df.parse("05/29/2000"));
     Course c1 = new Course("COSC2101", "Introduction to IT", 12);
 
-    public AddEnrolment() throws ParseException {
+    public DeleteEnrolment() throws ParseException {
     }
 
     @Before
@@ -29,7 +29,12 @@ public class AddEnrolment {
     }
 
     @Test
-    public void addDuplicate() {
-        assertFalse(sem.add(s1, c1, "2021A"));
+    public void delete() {
+        assertTrue(sem.delete(1));
+    }
+
+    @Test
+    public void deleteNonExistingID() {
+        assertFalse(sem.delete(3));
     }
 }
