@@ -1,6 +1,4 @@
-package StudentEnrolment;
-
-import java.util.ArrayList;
+package StudentEnrolment.main;
 
 public interface StudentEnrolmentManager {
 

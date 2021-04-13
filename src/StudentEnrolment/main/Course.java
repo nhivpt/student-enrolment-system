@@ -1,4 +1,4 @@
-package StudentEnrolment;
+package StudentEnrolment.main;
 
 public class Course {
     private String courseID;

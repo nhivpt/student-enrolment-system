@@ -1,4 +1,4 @@
-package StudentEnrolment;
+package StudentEnrolment.main;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -36,7 +36,9 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
         }
     }
 
-    public StudentEnrolmentList() {
+    public StudentEnrolmentList(StudentList studentList, CourseList courseList) {
+        this.studentList = studentList;
+        this.courseList = courseList;
         this.enrolmentList = new ArrayList<>();
     }
 

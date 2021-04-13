@@ -1,4 +1,4 @@
-package StudentEnrolment;
+package StudentEnrolment.main;
 
 import java.util.ArrayList;
 

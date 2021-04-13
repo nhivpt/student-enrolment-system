@@ -6,7 +6,7 @@ Student ID: s3754467
 Student Name: Vo Phuong Thao Nhi
 
 */
-package StudentEnrolment;
+package StudentEnrolment.main;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -20,7 +20,7 @@ public class Main {
         StudentList studentList = new StudentList();
         CourseList courseList = new CourseList();
 
-        StudentEnrolmentList sem = new StudentEnrolmentList("src/StudentEnrolment/default.csv", studentList, courseList);
+        StudentEnrolmentList sem = new StudentEnrolmentList("src/StudentEnrolment/main/default.csv", studentList, courseList);
 
         Student s1 = new Student("S3754467", "Vo Phuong Thao Nhi", df.parse("29/05/2000"));
         Student s2 = new Student("S3697890", "Jane Doe", df.parse("28/6/1998"));
