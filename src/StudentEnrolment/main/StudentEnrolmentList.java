@@ -82,8 +82,11 @@ public class StudentEnrolmentList implements StudentEnrolmentManager {
     public boolean add(Student student, Course course, String semester) {
         enrolmentIDCounter++;
         StudentEnrolment enrolment = new StudentEnrolment(enrolmentIDCounter, student, course, semester);
-        enrolmentList.add(enrolment);
-        return true;
+        if (!isDuplicate(student.getStudentID(), course.getCourseID())) {
+            enrolmentList.add(enrolment);
+            return true;
+        }
+        return false;
     }
 
     @Override

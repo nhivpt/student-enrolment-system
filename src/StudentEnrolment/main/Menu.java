@@ -240,17 +240,17 @@ public class Menu {
             System.out.println("There is no course with the ID " + courseID + "\n");
             return;
         }
-        if (sem.isDuplicate(studentID, courseID)) {
-            System.out.println("This student is already enrolled in the course.\n");
-            return;
-        }
         do {
             System.out.print("Semester: ");
             semester = sc.next();
         } while (checkSemester(semester));
 
         semester = semester.toUpperCase();
-        sem.add(student, course, semester);
+
+        if (!sem.add(student, course, semester)) {
+            System.out.println("This student is already enrolled in the course.\n");
+            return;
+        }
 
         System.out.println("Enrolled successfully.");
 
@@ -445,7 +445,7 @@ public class Menu {
     }
 
     public boolean checkSemester(String semester) {
-        String pattern = "[0-9]{4}[A-z]";
+        String pattern = "[0-9]{4}[A-c]";
         if (!semester.matches(pattern)) {
             System.out.println("Invalid entry. Please try again.");
             return true;
@@ -454,7 +454,7 @@ public class Menu {
     }
 
     public boolean checkStudentID(String studentID) {
-        String pattern = "[A-z][0-9]{6,7}";
+        String pattern = "[Ss][0-9]{6,7}";
         if (!studentID.matches(pattern)) {
             System.out.println("Invalid entry. Please try again.");
             return true;
@@ -463,7 +463,7 @@ public class Menu {
     }
 
     public boolean checkCourseID(String courseID) {
-        String pattern = "[A-z]{3,4}[0-9]{3,4}";
+        String pattern = "[A-z]{3,4}[0-9]{4}";
         if (!courseID.matches(pattern)) {
             System.out.println("Invalid entry. Please try again.");
             return true;
